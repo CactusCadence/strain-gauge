@@ -1,11 +1,17 @@
 #include <Arduino.h>
+#include <Adafruit_NAU7802.h>
+
+Adafruit_NAU7802 nau;
 
 // put function declarations here:
 void myFunction();
 
 void setup() {
-  // put your setup code here, to run once:
-  myFunction();
+  Serial.begin(115200);
+
+  if(!nau.begin()) {
+    Serial.println("Failed to find NAU7802");
+  }
 }
 
 void loop() {
