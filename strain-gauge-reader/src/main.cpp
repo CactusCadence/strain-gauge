@@ -3,8 +3,15 @@
 
 Adafruit_NAU7802 nau;
 
+int analogPin = 0;
+int raw = 0;
+int Vin = 3.3;
+float Vout = 0;
+float R1 = 1000; // 100
+float R2 = 0;
+float buffer = 0;
+
 // put function declarations here:
-void myFunction();
 
 void setup() {
   Serial.begin(115200);
@@ -15,13 +22,20 @@ void setup() {
 }
 
 void loop() {
-  myFunction();
+  raw = analogRead(analogPin);
+  if(raw) {
+    buffer = raw*Vin;
+    Vout = (buffer)/1024.0;
+    buffer = (Vin/Vout) - 1;
+    Serial.print("Buffer: ");
+    Serial.println(buffer);
+    R2 = R1*buffer;
+    Serial.print("Vout: ");
+    Serial.println(Vout);
+    Serial.print("R2: ");
+    Serial.println(R2);
+    delay(3000);
+  }
 }
 
 // put function definitions here:
-void myFunction() {
-  Serial.print("test! ");
-  delay(1000);
-
-  return;
-}
