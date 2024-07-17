@@ -12,6 +12,7 @@ float R2 = 0;
 float buffer = 0;
 
 // put function declarations here:
+float readResistance();
 
 void setup() {
   Serial.begin(115200);
@@ -22,20 +23,25 @@ void setup() {
 }
 
 void loop() {
+  float res = readResistance();
+  Serial.print("Res: ");
+  Serial.println(res);
+  delay(3000);
+}
+
+// put function definitions here:
+
+// readResistance reads the raw voltage of the pin and calculates the resistance
+// This can easily be changed later to read the resistance with the ADC instead of raw through the M0
+float readResistance() {
   raw = analogRead(analogPin);
   if(raw) {
     buffer = raw*Vin;
     Vout = (buffer)/1024.0;
     buffer = (Vin/Vout) - 1;
-    Serial.print("Buffer: ");
-    Serial.println(buffer);
     R2 = R1*buffer;
-    Serial.print("Vout: ");
-    Serial.println(Vout);
-    Serial.print("R2: ");
-    Serial.println(R2);
-    delay(3000);
+    return R2;
   }
+  // If no raw, return -1
+  return -1;
 }
-
-// put function definitions here:
