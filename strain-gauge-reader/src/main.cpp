@@ -3,16 +3,21 @@
 
 Adafruit_NAU7802 nau;
 
+// Declare the constants
 int analogPin = 0;
 int raw = 0;
 int Vin = 3.3;
 float Vout = 0;
 float R1 = 1000;
 float R2 = 0; // 100
+float GF = 2; // Should be a constant of the gauge material. Will need changed from 2
 
-// Declare variables so they can be used in setup and loop
+// Declare other variables
 float buffer = 0;
 float initRes = 0; 
+float strain = 0;
+float resChange = 0;
+float currentRes = 0;
 
 // Function declarations:
 float readResistance();
@@ -32,6 +37,14 @@ void loop() {
   // float res = readResistance();
   Serial.print("Res: ");
   Serial.println(initRes);
+
+  currentRes = readResistance();
+  resChange = initRes - currentRes;
+
+  // This might be too simplified of an equation. We can characterize our materials and hopefully use a linear equation
+  strain = (resChange/initRes)/(GF); 
+  Serial.print("Strain: ");
+  Serial.println(strain);
   delay(3000);
 }
 
