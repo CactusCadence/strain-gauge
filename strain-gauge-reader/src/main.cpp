@@ -7,11 +7,14 @@ int analogPin = 0;
 int raw = 0;
 int Vin = 3.3;
 float Vout = 0;
-float R1 = 1000; // 100
-float R2 = 0;
-float buffer = 0;
+float R1 = 1000;
+float R2 = 0; // 100
 
-// put function declarations here:
+// Declare variables so they can be used in setup and loop
+float buffer = 0;
+float initRes = 0; 
+
+// Function declarations:
 float readResistance();
 
 void setup() {
@@ -20,16 +23,19 @@ void setup() {
   if(!nau.begin()) {
     Serial.println("Failed to find NAU7802");
   }
+
+  delay(100); // Short delay for initial voltage spike
+  initRes = readResistance();
 }
 
 void loop() {
-  float res = readResistance();
+  // float res = readResistance();
   Serial.print("Res: ");
-  Serial.println(res);
+  Serial.println(initRes);
   delay(3000);
 }
 
-// put function definitions here:
+// Function definitions:
 
 // readResistance reads the raw voltage of the pin and calculates the resistance
 // This can easily be changed later to read the resistance with the ADC instead of raw through the M0
