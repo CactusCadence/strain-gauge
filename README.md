@@ -1,3 +1,3 @@
 # strain-gauge
-Strain gauge reader
+Strain gauge reader  
 it reads strain gauges
